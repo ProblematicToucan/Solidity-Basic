@@ -7,4 +7,7 @@ remappings = [
     "@chainlink/contracts/=lib/chainlink-brownie-contracts/contracts"
 ]
 
+[rpc_endpoints]
+sepolia = "https://rpc.sepolia.org/"
+
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config

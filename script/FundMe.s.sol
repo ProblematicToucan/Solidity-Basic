@@ -6,13 +6,27 @@ import {FundMe} from "../src/FundMe.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
 
 contract FundMeScript is Script {
+    bool private constant USE_ANVIL = true;
+    HelperConfig private helperConfig;
+
+    constructor() {
+        if (!USE_ANVIL) {
+            string memory url = vm.rpcUrl("sepolia");
+            vm.createSelectFork(url); // Fork network
+        }
+    }
+
     function run() external returns (FundMe) {
-        HelperConfig helperConfig = new HelperConfig();
+        helperConfig = new HelperConfig();
         address ethUsdPriceFeed = helperConfig.activeNetworkConfig();
 
         vm.startBroadcast();
         FundMe fundMe = new FundMe(ethUsdPriceFeed);
         vm.stopBroadcast();
         return fundMe;
+    }
+
+    function getHelperConfig() external view returns (HelperConfig) {
+        return helperConfig;
     }
 }
